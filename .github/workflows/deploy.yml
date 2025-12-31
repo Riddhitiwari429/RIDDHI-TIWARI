@@ -26,3 +26,8 @@ jobs:
       name: github-pages
     steps:
       - uses: actions/deploy-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          # Agar Vite hai toh 'dist' likhein, agar React hai toh 'build'
+          path: 'dist'
