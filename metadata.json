@@ -1,0 +1,8 @@
+{
+  "name": "GemiKid - Expert Bilingual Teacher",
+  "description": "An interactive, bilingual English-Hindi learning companion for children that focuses on writing and language skills with a step-by-step pedagogical approach.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ]
+}
