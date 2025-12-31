@@ -21,3 +21,7 @@ export default defineConfig(({ mode }) => {
       }
     };
 });
+export default defineConfig({
+  base: '/RIDDHI-TIWARI/', // Aapki repository ka naam
+  plugins: [react()],
+})
