@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+ame: Deploy to GitHub Pages
 on:
   push:
     branches: "main"
@@ -26,25 +26,3 @@ jobs:
       name: github-pages
     steps:
       - uses: actions/deploy-pages@v4
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       
