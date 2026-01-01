@@ -46,10 +46,10 @@ export class GeminiService {
    * API key (from process.env.API_KEY) is used for every request.
    */
   private createAI() {
-   return new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
+    return new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
+  }
+
   async getSpellingWords(classLevel: string): Promise<any[]> {
-    const ai = this.createAI();
-    const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [{
         parts: [{ 
