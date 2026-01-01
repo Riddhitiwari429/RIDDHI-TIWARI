@@ -45,30 +45,16 @@ async function decodeAudioData(
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
 
 export class GeminiService {
-  private createAI() {
+ private createAI() {
     // Vercel और Vite के लिए सबसे सुरक्षित तरीका
     const key = import.meta.env.VITE_GEMINI_API_KEY || "";
     return new GoogleGenerativeAI(key);
   }
-  /**
-   * Always creates a fresh instance of GoogleGenAI to ensure the latest 
-   * API key (from process.env.API_KEY) is used for every request.
-   * Always creates a fresh instance of GoogleGenAI to ensure the latest
-   * API key is used.
-   */
-private createAI() {
-  private createAI() {
-    return new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
-  }
 
   async getSpellingWords(classLevel: string): Promise<any[]> {
-  
-async getSpellingWords(classLevel: string): Promise<any[]> {
-  const ai = this.createAI();
-  const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
-    contents: [{
-      parts: [{ 
+    const ai = this.createAI();
+    const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // ... इसके आगे का आपका पुराना कोड (जैसे prompt और try-catch)
         text: `Generate a JSON array of 10 spelling words for a child in ${classLevel}. 
         Each object must have "word" (English), "hindi" (Hindi translation), and "hint" (a simple child-friendly clue).
         Focus on common educational vocabulary.` 
