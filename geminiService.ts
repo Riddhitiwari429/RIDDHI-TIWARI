@@ -45,10 +45,11 @@ export class GeminiService {
    * Always creates a fresh instance of GoogleGenAI to ensure the latest 
    * API key (from process.env.API_KEY) is used for every request.
    */
-  private createAI() {
+private createAI() {
     return new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
   }
 
+  async getSpellingWords(classLevel: string): Promise<any[]> {
   async getSpellingWords(classLevel: string): Promise<any[]> {
       model: 'gemini-3-flash-preview',
       contents: [{
