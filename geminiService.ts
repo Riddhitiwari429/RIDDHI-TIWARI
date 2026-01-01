@@ -50,6 +50,8 @@ export class GeminiService {
   }
 
   async getSpellingWords(classLevel: string): Promise<any[]> {
+
+  async getSpellingWords(classLevel: string): Promise<any[]> {
       model: 'gemini-3-flash-preview',
       contents: [{
         parts: [{ 
