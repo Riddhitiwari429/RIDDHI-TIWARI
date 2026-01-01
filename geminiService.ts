@@ -44,26 +44,19 @@ async function decodeAudioData(
 // Vite uses import.meta.env to access environment variables
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
 
-export class GeminiService {
- private createAI() {
-    // Vercel और Vite के लिए सबसे सुरक्षित तरीका
+
+// लाइन 48 से शुरू करें
+  private createAI() {
     const key = import.meta.env.VITE_GEMINI_API_KEY || "";
     return new GoogleGenerativeAI(key);
   }
 
+  // इसके तुरंत बाद यह फंक्शन (सिर्फ एक बार)
   async getSpellingWords(classLevel: string): Promise<any[]> {
     const ai = this.createAI();
-    const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
-    // ... इसके आगे का आपका पुराना कोड (जैसे prompt और try-catch)
-        text: `Generate a JSON array of 10 spelling words for a child in ${classLevel}. 
-        Each object must have "word" (English), "hindi" (Hindi translation), and "hint" (a simple child-friendly clue).
-        Focus on common educational vocabulary.` 
-      }]
-    }],
-    config: {
-      responseMimeType: "application/json",
-      responseSchema: {
-        type: Type.ARRAY,
+    const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    // ... बाकी का पुराना कोड
+  
         items: {
           type: Type.OBJECT,
           properties: {
