@@ -51,37 +51,40 @@ private createAI() {
 
   async getSpellingWords(classLevel: string): Promise<any[]> {
   
-      model: 'gemini-3-flash-preview',
-      contents: [{
-        parts: [{ 
-          text: `Generate a JSON array of 10 spelling words for a child in ${classLevel}. 
-          Each object must have "word" (English), "hindi" (Hindi translation), and "hint" (a simple child-friendly clue).
-          Focus on common educational vocabulary.` 
-        }]
-      }],
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.ARRAY,
-          items: {
-            type: Type.OBJECT,
-            properties: {
-              word: { type: Type.STRING },
-              hindi: { type: Type.STRING },
-              hint: { type: Type.STRING }
-            },
-            required: ["word", "hindi", "hint"]
-          }
+async getSpellingWords(classLevel: string): Promise<any[]> {
+  const ai = this.createAI();
+  const response = await ai.models.generateContent({
+    model: 'gemini-3-flash-preview',
+    contents: [{
+      parts: [{ 
+        text: `Generate a JSON array of 10 spelling words for a child in ${classLevel}. 
+        Each object must have "word" (English), "hindi" (Hindi translation), and "hint" (a simple child-friendly clue).
+        Focus on common educational vocabulary.` 
+      }]
+    }],
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.ARRAY,
+        items: {
+          type: Type.OBJECT,
+          properties: {
+            word: { type: Type.STRING },
+            hindi: { type: Type.STRING },
+            hint: { type: Type.STRING }
+          },
+          required: ["word", "hindi", "hint"]
         }
       }
-    });
-    
-    try {
-      return JSON.parse(response.text || "[]");
-    } catch (e) {
-      return [];
     }
+  });
+
+  try {
+    return JSON.parse(response.text || "[]");
+  } catch (e) {
+    return [];
   }
+}
 
   async *getTeacherResponseStream(
     message: string, 
