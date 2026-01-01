@@ -45,6 +45,11 @@ async function decodeAudioData(
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
 
 export class GeminiService {
+  private createAI() {
+    // Vercel और Vite के लिए सबसे सुरक्षित तरीका
+    const key = import.meta.env.VITE_GEMINI_API_KEY || "";
+    return new GoogleGenerativeAI(key);
+  }
   /**
    * Always creates a fresh instance of GoogleGenAI to ensure the latest 
    * API key (from process.env.API_KEY) is used for every request.
