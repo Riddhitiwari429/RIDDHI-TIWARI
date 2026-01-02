@@ -3,6 +3,7 @@ import { GEMIKID_SYSTEM_PROMPT } from "./constants";
 
 export class GeminiService {
   private createAI() {
+    // Vite के लिए सही API Key वेरिएबल
     return new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
   }
 
