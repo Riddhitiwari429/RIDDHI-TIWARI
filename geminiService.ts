@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GEMIKID_SYSTEM_PROMPT } from "./constants";
 
-// --- हेल्पर फंक्शन्स (ऑडियो के लिए) ---
+// --- ऑडियो प्रोसेसिंग हेल्पर ---
 function decode(base64: string) {
   const binaryString = atob(base64);
   const bytes = new Uint8Array(binaryString.length);
@@ -31,16 +31,21 @@ async function decodeAudioData(
 
 // --- मुख्य सर्विस क्लास ---
 export class GeminiService {
+  /**
+   * AI क्लाइंट शुरू करने का सही तरीका
+   */
   private createAI() {
-    // Vite और Vercel के लिए सही वेरिएबल
     const key = import.meta.env.VITE_GEMINI_API_KEY || "";
     return new GoogleGenerativeAI(key);
   }
 
+  /**
+   * स्पेलिंग वर्ड्स जेनरेट करना
+   */
   async getSpellingWords(classLevel: string): Promise<any[]> {
     const ai = this.createAI();
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const prompt = `Generate a JSON array of 10 spelling words for ${classLevel}. Return ONLY the raw JSON array starting with [ and ending with ].`;
+    const prompt = `Generate a JSON array of 10 spelling words for ${classLevel}. Return ONLY raw JSON starting with [ and ending with ].`;
 
     try {
       const result = await model.generateContent(prompt);
@@ -48,11 +53,14 @@ export class GeminiService {
       const jsonStr = text.substring(text.indexOf('['), text.lastIndexOf(']') + 1);
       return JSON.parse(jsonStr || "[]");
     } catch (e) {
-      console.error("Spelling error:", e);
+      console.error("Spelling words error:", e);
       return [];
     }
   }
 
+  /**
+   * AI टीचर रिस्पांस स्ट्रीम
+   */
   async *getTeacherResponseStream(message: string, history: any[]) {
     const ai = this.createAI();
     const model = ai.getGenerativeModel({ 
@@ -68,7 +76,7 @@ export class GeminiService {
         yield { text: chunk.text() };
       }
     } catch (err) {
-      console.error("Stream error:", err);
+      console.error("Stream generation failed:", err);
       throw err;
     }
   }
