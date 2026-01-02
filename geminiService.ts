@@ -3,7 +3,7 @@ import { GoogleGenAI, Modality, LiveServerMessage, Blob } from "@google/genai";
 import { GEMIKID_SYSTEM_PROMPT } from "./constants";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// --- Helper functions for audio processing ---
+// --- ऑडियो प्रोसेसिंग के लिए हेल्पर फंक्शन्स ---
 function decode(base64: string) {
   const binaryString = atob(base64);
   const len = binaryString.length;
@@ -42,18 +42,22 @@ async function decodeAudioData(
   return buffer;
 }
 
-// --- Main Service Class ---
+// --- मुख्य सर्विस क्लास ---
 export class GeminiService {
+  /**
+   * Gemini API क्लाइंट शुरू करने के लिए
+   */
   private createAI() {
-    // Vite और Vercel के लिए सही तरीका
     return new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
   }
 
   private createNewSDK() {
-    // Advanced फीचर्स के लिए नया SDK
     return new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY || "" });
   }
 
+  /**
+   * Spelling Words जेनरेट करने के लिए
+   */
   async getSpellingWords(classLevel: string): Promise<any[]> {
     const ai = this.createAI();
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -74,6 +78,9 @@ export class GeminiService {
     }
   }
 
+  /**
+   * AI Teacher के साथ बातचीत (Streaming) के लिए
+   */
   async *getTeacherResponseStream(
     message: string, 
     history: any[], 
@@ -131,20 +138,9 @@ export class GeminiService {
     }
   }
 
-  async transcribeAudio(audioBase64: string): Promise<string> {
-    const ai = this.createNewSDK();
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-exp',
-      contents: [{
-        parts: [
-          { text: "Transcribe the following audio precisely." },
-          { inlineData: { mimeType: 'audio/wav', data: audioBase64 } }
-        ]
-      }]
-    });
-    return response.text || "";
-  }
-
+  /**
+   * इमेज जेनरेट करने के लिए
+   */
   async generateImage(prompt: string, aspectRatio: string) {
     const ai = this.createNewSDK();
     const response = await ai.models.generateContent({
@@ -154,6 +150,9 @@ export class GeminiService {
     return response;
   }
 
+  /**
+   * आवाज़ (TTS) जेनरेट करने के लिए
+   */
   async speak(text: string, voiceName: string = 'Kore'): Promise<AudioBuffer | null> {
     try {
       const ai = this.createNewSDK();
@@ -177,6 +176,9 @@ export class GeminiService {
     return null;
   }
 
+  /**
+   * लाइव वॉइस चैट के लिए
+   */
   async connectLive({ onAudio, onInterrupted, onClose, voiceName }: any) {
     const ai = this.createNewSDK();
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
