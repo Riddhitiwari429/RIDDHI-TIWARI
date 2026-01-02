@@ -1,8 +1,7 @@
-/* Developed by Riddhi Tiwari */
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GEMIKID_SYSTEM_PROMPT } from "./constants";
 
-// --- ऑडियो के लिए हेल्पर फंक्शन्स ---
+// --- हेल्पर फंक्शन्स (ऑडियो के लिए) ---
 function decode(base64: string) {
   const binaryString = atob(base64);
   const bytes = new Uint8Array(binaryString.length);
@@ -33,7 +32,7 @@ async function decodeAudioData(
 // --- मुख्य सर्विस क्लास ---
 export class GeminiService {
   private createAI() {
-    // Vite के लिए सही API Key वेरिएबल
+    // Vite और Vercel के लिए सही वेरिएबल
     const key = import.meta.env.VITE_GEMINI_API_KEY || "";
     return new GoogleGenerativeAI(key);
   }
@@ -41,7 +40,7 @@ export class GeminiService {
   async getSpellingWords(classLevel: string): Promise<any[]> {
     const ai = this.createAI();
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const prompt = `Generate a JSON array of 10 spelling words for ${classLevel}. Return ONLY the raw JSON array.`;
+    const prompt = `Generate a JSON array of 10 spelling words for ${classLevel}. Return ONLY the raw JSON array starting with [ and ending with ].`;
 
     try {
       const result = await model.generateContent(prompt);
