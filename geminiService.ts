@@ -40,39 +40,17 @@ async function decodeAudioData(
   }
   return buffer;
 }
-// --- लाइन 43 से पेस्ट करें ---
-
-// Initialize the Gemini API client
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
-
-export class GeminiService {
-  /**
-   * Always creates a fresh instance of GoogleGenAI to ensure the latest
-   * API key is used.
-   */
+// लाइन 43 से पेस्ट करना शुरू करें
   private createAI() {
-    // Vercel और Vite के लिए सही तरीका
+    // VITE_ का इस्तेमाल करें क्योंकि आपका ऐप Vite पर है
     return new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
   }
 
   async getSpellingWords(classLevel: string): Promise<any[]> {
     const ai = this.createAI();
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-    const prompt = `Generate a JSON array of 10 spelling words for a child in ${classLevel}. 
-    Each object must have "word" (English), "hindi" (Hindi translation), and "sentence" (simple English sentence using the word).`;
-
-    try {
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
-      const jsonStr = text.substring(text.indexOf('['), text.lastIndexOf(']') + 1);
-      return JSON.parse(jsonStr);
-    } catch (error) {
-      console.error("Gemini Error:", error);
-      throw error;
-    }
-  }
+    // इसके नीचे का आपका try-catch ब्लॉक रहने दें...
+      
 // --- यहाँ से आपकी फ़ाइल का अगला फंक्शन (जैसे line 76) शुरू होगा ---
 
   try {
