@@ -14,18 +14,14 @@ export class GeminiService {
       const text = result.response.text();
       const jsonStr = text.substring(text.indexOf('['), text.lastIndexOf(']') + 1);
       return JSON.parse(jsonStr || "[]");
-    } catch (e) {
-      return [];
-    }
+    } catch (e) { return []; }
   }
 
   async *getTeacherResponseStream(message: string, history: any[]) {
     const ai = this.createAI();
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash", systemInstruction: GEMIKID_SYSTEM_PROMPT });
     const result = await model.generateContentStream({ contents: [...history, { role: 'user', parts: [{ text: message }] }] });
-    for await (const chunk of result.stream) {
-      yield { text: chunk.text() };
-    }
+    for await (const chunk of result.stream) { yield { text: chunk.text() }; }
   }
 }
 
