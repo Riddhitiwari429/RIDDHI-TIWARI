@@ -45,12 +45,12 @@ async function decodeAudioData(
 // --- Main Service Class ---
 export class GeminiService {
   private createAI() {
-    // VITE_ का इस्तेमाल करें क्योंकि आपका ऐप Vite पर है
+    // Vite और Vercel के लिए सही तरीका
     return new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
   }
 
-  // New SDK for Live/Advanced features
   private createNewSDK() {
+    // Advanced फीचर्स के लिए नया SDK
     return new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY || "" });
   }
 
@@ -151,7 +151,6 @@ export class GeminiService {
       model: 'imagen-3',
       contents: { parts: [{ text: `A colorful, educational illustration for children: ${prompt}` }] },
     });
-    // extraction logic here
     return response;
   }
 
