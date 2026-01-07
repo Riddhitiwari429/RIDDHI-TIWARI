@@ -49,3 +49,5 @@ const genAI = new GoogleGenerativeAI(apiKey);
 }
 
 export const geminiService = new GeminiService();
+// File ke bilkul niche ye line likhein
+export const gemini = new GeminiService();
