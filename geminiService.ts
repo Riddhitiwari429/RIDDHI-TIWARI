@@ -3,14 +3,17 @@ import { GEMIKID_SYSTEM_PROMPT } from "./constants";
 
 export class GeminiService {
   private createAI() {
-// Correct way to access the key in a Vite project
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    // Correct way to access the key in a Vite project
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
-if (!apiKey) {
-  console.error("Gemini API Key is missing! Check your GitHub Secrets.");
-}
+    if (!apiKey) {
+      console.error("Gemini API Key is missing! Check your GitHub Secrets.");
+    }
 
-const genAI = new GoogleGenerativeAI(apiKey);
+    const genAI = new GoogleGenerativeAI(apiKey);
+    return genAI;
+  }
+
   async getSpellingWords(classLevel: string): Promise<any[]> {
     const ai = this.createAI();
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });

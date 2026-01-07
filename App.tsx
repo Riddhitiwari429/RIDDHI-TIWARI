@@ -1,9 +1,10 @@
 /* Developed by Riddhi Tiwari */
 import React, { useState, useRef, useEffect } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Header from './components/Header';
 import ChatMessage from './components/ChatMessage';
 import { Message, Role, TeacherState, StudentProfile, SpellingWord } from './types';
-import { gemini } from './geminiService';
+import { geminiService as gemini } from './geminiService';
 import { ASPECT_RATIOS, CLASS_LEVELS, AVAILABLE_VOICES } from './constants';
 
 const App: React.FC = () => {
@@ -514,6 +515,7 @@ const App: React.FC = () => {
         </div>
         <div className="bg-amber-100/30 py-1 border-t border-amber-200 text-center"><p className="text-[9px] font-bold text-amber-400 uppercase tracking-widest opacity-80">GemiKid • Your AI Tuition Friend</p></div>
       </footer>
+      <SpeedInsights />
     </div>
   );
 };
