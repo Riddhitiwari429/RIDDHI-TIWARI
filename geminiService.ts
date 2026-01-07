@@ -3,16 +3,21 @@ import { GEMIKID_SYSTEM_PROMPT } from "./constants";
 
 export class GeminiService {
   private createAI() {
-// Correct way to access the key in a Vite project
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    // Correct way to access the key in a Vite project
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
-if (!apiKey) {
-  console.error("Gemini API Key is missing! Check your GitHub Secrets.");
-}
+    if (!apiKey) {
+      console.error("Gemini API Key is missing! Check your Vercel Environment Variables.");
+      return null;
+    }
 
-const genAI = new GoogleGenerativeAI(apiKey);
+    return new GoogleGenerativeAI(apiKey);
+  }
+
   async getSpellingWords(classLevel: string): Promise<any[]> {
     const ai = this.createAI();
+    if (!ai) return [];
+    
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
     const prompt = `Generate a JSON array of 10 spelling words for ${classLevel}. Return ONLY raw JSON starting with [ and ending with ].`;
 
@@ -29,6 +34,8 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
   async *getTeacherResponseStream(message: string, history: any[]) {
     const ai = this.createAI();
+    if (!ai) throw new Error("AI Initialization failed");
+
     const model = ai.getGenerativeModel({ 
       model: "gemini-1.5-flash", 
       systemInstruction: GEMIKID_SYSTEM_PROMPT 
@@ -48,6 +55,5 @@ const genAI = new GoogleGenerativeAI(apiKey);
   }
 }
 
-export const geminiService = new GeminiService();
-// File ke bilkul niche ye line likhein
+// Hamesha class ke niche hi object banayein
 export const gemini = new GeminiService();
